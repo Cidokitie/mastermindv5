@@ -1,7 +1,8 @@
 // MASTERMIND V5 - WhatsApp Multi-Device Bot
 // index.js
 
-const { makeWASocket, useSingleFileAuthState } = require('@whiskeysockets/baileys');
+const makeWASocket = require('@whiskeysockets/baileys').default;
+const { useSingleFileAuthState } = require('@whiskeysockets/baileys');
 const fs = require('fs');
 const path = require('path');
 const ytdl = require('ytdl-core');
@@ -46,8 +47,7 @@ async function sendMenu(sock, from) {
             image: { url: menuPath },
             caption: `*MASTERMIND V5 MENU*
 
-` +
-                     `» ${PREFIX}menu - Show this menu
+» ${PREFIX}menu - Show this menu
 » ${PREFIX}ping - Latency check
 » ${PREFIX}play <query> - YouTube audio
 » ${PREFIX}quote - Random quote
@@ -57,7 +57,8 @@ async function sendMenu(sock, from) {
 » ${PREFIX}status - Bot status
 » ${PREFIX}owner - Owner contact
 » ${PREFIX}groupinfo - Info
-» ${PREFIX}uptime - Uptime` });
+» ${PREFIX}uptime - Uptime`
+        });
     } else {
         await sock.sendMessage(from, {
             text: `📜 MASTERMIND V5 COMMANDS:
@@ -152,10 +153,9 @@ const startBot = async () => {
                 case 'status': {
                     const uptime = formatUptime(Date.now() - startTime);
                     const used = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2);
-                    await sock.sendMessage(from, { text:
-                        `🧠 *Mastermind Bot Status*
-` +
-                        `» Owner: Mastermind
+                    await sock.sendMessage(from, {
+                        text: `🧠 *Mastermind Bot Status*\n
+» Owner: Mastermind
 » Version: ${VERSION}
 » Prefix: ${PREFIX}
 » RAM: ${used} MB
@@ -172,22 +172,24 @@ const startBot = async () => {
 
                 case 'owner': {
                     if (!isOwner) return sock.sendMessage(from, { text: '🚫 This command is only for the bot owner' });
-                    await sock.sendMessage(from, { text:
-                        `👑 Mastermind
+                    await sock.sendMessage(from, {
+                        text: `👑 Mastermind
 📍 Abuja, Nigeria
 📞 091-233-59124
-📧 abdulrasheedmustapha3030@gmail.com` });
+📧 abdulrasheedmustapha3030@gmail.com`
+                    });
                     break;
                 }
 
                 case 'groupinfo': {
                     if (!isGroup) return sock.sendMessage(from, { text: '❌ Group only' });
                     const meta = await sock.groupMetadata(from);
-                    await sock.sendMessage(from, { text:
-                        `👥 *Group Info*
+                    await sock.sendMessage(from, {
+                        text: `👥 *Group Info*
 Name: ${meta.subject}
 ID: ${from}
-Participants: ${meta.participants.length}` });
+Participants: ${meta.participants.length}`
+                    });
                     break;
                 }
             }
